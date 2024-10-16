@@ -1,11 +1,21 @@
-import React from 'react'
+import React from "react";
+import Hero from "../components/Hero";
+import Biography from "../components/Biography";
+import Department from "../components/Departments";
+import MessageForm from "../components/MessageForm";
 
 const Home = () => {
   return (
-    <div>
-      
-    </div>
-  )
-}
+    <>
+      <Hero
+        title={"Welcome to CareConnect🩺 | Your Trusted Healthcare Provider"}
+        imageurl={"/hero.png"}
+      />
+      <Biography imageUrl={"/about.png"}/>
+      <Department />
+      <MessageForm />
+    </>
+  );
+};
 
-export default Home
+export default Home;
