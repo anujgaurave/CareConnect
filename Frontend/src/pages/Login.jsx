@@ -16,27 +16,27 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    // try {
-    //   await axios
-    //     .post(
-    //       "http://localhost:4000/api/v1/user/login",
-    //       { email, password, confirmPassword, role: "Patient" },
-    //       {
-    //         withCredentials: true,
-    //         headers: { "Content-Type": "application/json" },
-    //       }
-    //     )
-    //     .then((res) => {
-    //       toast.success(res.data.message);
-    //       setIsAuthenticated(true);
-    //       navigateTo("/");
-    //       setEmail("");
-    //       setPassword("");
-    //       setConfirmPassword("");
-    //     });
-    // } catch (error) {
-    //   toast.error(error.response.data.message);
-    // }
+    try {
+      await axios
+        .post(
+          "http://localhost:4000/api/v1/user/login",
+          { email, password, confirmPassword, role: "Patient" },
+          {
+            withCredentials: true,
+            headers: { "Content-Type": "application/json" },
+          }
+        )
+        .then((res) => {
+          toast.success(res.data.message);
+          setIsAuthenticated(true);
+          navigateTo("/");
+          setEmail("");
+          setPassword("");
+          setConfirmPassword("");
+        });
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
   };
 
   if (isAuthenticated) {
@@ -47,10 +47,10 @@ const Login = () => {
     <div className="container form-component login-form">
        <h2>Sign In</h2>
         <p>Please Login To Continue</p>
-        <p>
+        {/* <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat culpa
           voluptas expedita itaque ex, totam ad quod error?
-        </p>
+        </p> */}
         <form onSubmit={handleLogin}>
           <input
             type="text"
