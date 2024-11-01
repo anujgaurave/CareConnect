@@ -1,7 +1,8 @@
 import React from 'react'
 
-const Hero = ({title,imageurl}) => {
+const Hero = ({title,imageUrl}) => {
   return (
+    <>
     <div className='hero container'>
       <div className="banner">
         <h1> {title}</h1>
@@ -10,12 +11,13 @@ const Hero = ({title,imageurl}) => {
          </p>
       </div>
       <div className="banner">
-        <img src={imageurl} alt="hero" className='animated-image' />
+        <img src={imageUrl} alt="hero" className='animated-image' />
         <span>
-          <img src="/Vector.png" alt="vector" />
+          <img src="Frontend/public/Vector.png" alt="vector" />
         </span>
       </div>
     </div>
+    </>
   )
 }
 

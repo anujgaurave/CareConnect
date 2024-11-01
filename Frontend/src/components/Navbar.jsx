@@ -33,7 +33,7 @@ const Navbar = () => {
 
   return (
     <nav className='container'>
-      <div className='logo'>CareConnect</div>
+      <div className='logo'><img src="/logo.jpg" alt="logo" className="logo-img"/></div>
       <div className={show ? "navLinks showmenu": "navLinks"}>
         <div className="links">
         <Link to={"/"}>Home</Link>

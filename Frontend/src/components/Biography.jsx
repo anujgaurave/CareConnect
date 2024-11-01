@@ -2,6 +2,7 @@ import React from 'react'
 
 const Biography = ({imageUrl}) => {
   return (
+    <>
     <div className='container biography'>
       <div className="banner">
       <img src={imageUrl} alt="About image" />
@@ -20,6 +21,7 @@ const Biography = ({imageUrl}) => {
         <p><b>Continuous Improvement:</b>  Committed to refining our platform through user feedback and technology advancements.</p>
       </div>
     </div>
+    </>
   )
 }
 

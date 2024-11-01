@@ -70,7 +70,7 @@ const AppointmentForm = () => {
         }
       );
       toast.success(data.message);
-      setFirstName(""),
+        setFirstName(""),
         setLastName(""),
         setEmail(""),
         setPhone(""),

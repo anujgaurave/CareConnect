@@ -6,7 +6,7 @@ const Appointment = () => {
     <>
        <Hero
         title={"Schedule Your Appointment | CareConnect Medical Institute"}
-        imageUrl={"/signin.png"}
+        imageUrl={"/apointment.jpg"}
       />
       <AppointmentForm/>
     </>

@@ -9,7 +9,7 @@ const Home = () => {
     <>
       <Hero
         title={"Welcome to CareConnect🩺 | Your Trusted Healthcare Provider"}
-        imageurl={"/hero.png"}
+        imageUrl={"/hero.png"}
       />
       <Biography imageUrl={"/about.png"}/>
       <Department />
