@@ -1,33 +1,54 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useContext, useEffect } from 'react'
+import "./App.css";
+import {BrowserRouter as Router,Routes,Route} from "react-router-dom"
+import Dashboard from './components/Dashboard'
+import Sidebar from './components/Sidebar'
+import Login from './components/Login'
+import AddNewDoctor from './components/AddNewDoctor'
+import AddNewAdmin from './components/AddNewAdmin'
+import Messages from './components/Messages'
+import Doctors from './components/Doctors'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios'
+import {Context} from "./main"
+const App = () => {
 
-function App() {
-  const [count, setCount] = useState(0)
+  const { isAuthenticated, setIsAuthenticated, admin, setAdmin } =
+  useContext(Context);
 
+useEffect(() => {
+  const fetchUser = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:4000/api/v1/user/admin/me",
+        {
+          withCredentials: true,
+        }
+      );
+      setIsAuthenticated(true);
+      setAdmin(response.data.user);
+    } catch (error) {
+      setIsAuthenticated(false);
+      setAdmin({});
+    }
+  };
+  fetchUser();
+}, [isAuthenticated]);
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Router>
+        <Sidebar/>
+        <Routes>
+          <Route path='/' element={<Dashboard/>}/>
+          <Route path='/login' element={<Login/>}/>
+          <Route path='/doctor/addnew' element={<AddNewDoctor/>}/>
+          <Route path='/admin/addnew' element={<AddNewAdmin/>}/>
+          <Route path='/messages' element={<Messages/>}/>
+          <Route path='/doctors' element={<Doctors/>}/>
+        </Routes>
+        <ToastContainer position='top-center'/>
+      </Router>
     </>
   )
 }
