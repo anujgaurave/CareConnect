@@ -40,7 +40,7 @@ Ensure the following software is installed:
 ### Steps
 # Clone the repository
 ```bash
-git clone https://github.com/your-repo/careconnect.git
+git clone https://github.com/anujgaurave/Hospital-Management-System
 ```
 # Navigate to the project directory
 ```bash
@@ -77,7 +77,7 @@ Patients: Register, log in, and book appointments with available doctors.
 Contributions are welcome! To contribute:
 
 # Fork the repository
-git fork https://github.com/your-repo/careconnect.git
+git fork https://github.com/anujgaurave/Hospital-Management-System
 
 # Create a new branch
 git checkout -b feature-branch
