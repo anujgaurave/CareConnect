@@ -5,10 +5,11 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { GoCheckCircleFill } from "react-icons/go";
 import { AiFillCloseCircle } from "react-icons/ai";
-import Doctors from "./Doctors";
 
 const Dashboard = () => {
   const [appointments, setAppointments] = useState([]);
+  const [doctors, setDoctors] = useState([]);
+  const { isAuthenticated, admin } = useContext(Context);
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -25,6 +26,21 @@ const Dashboard = () => {
     fetchAppointments();
   }, []);
 
+  useEffect(() => {
+    const fetchDoctors = async () => {
+      try {
+        const { data } = await axios.get(
+          "http://localhost:4000/api/v1/user/doctors",
+          { withCredentials: true }
+        );
+        setDoctors(data.doctors);
+      } catch (error) {
+        setDoctors([]);
+      }
+    };
+    fetchDoctors();
+  }, []);
+
   const handleUpdateStatus = async (appointmentId, status) => {
     try {
       const { data } = await axios.put(
@@ -32,6 +48,8 @@ const Dashboard = () => {
         { status },
         { withCredentials: true }
       );
+
+      // Update the status in the frontend
       setAppointments((prevAppointments) =>
         prevAppointments.map((appointment) =>
           appointment._id === appointmentId
@@ -39,13 +57,13 @@ const Dashboard = () => {
             : appointment
         )
       );
+
       toast.success(data.message);
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error.response?.data?.message || "Failed to update status");
     }
   };
 
-  const { isAuthenticated, admin } = useContext(Context);
   if (!isAuthenticated) {
     return <Navigate to={"/login"} />;
   }
@@ -60,12 +78,15 @@ const Dashboard = () => {
               <div>
                 <p>Hello ,</p>
                 <h5>
-                  {admin &&
-                    `${admin.firstName} ${admin.lastName}`}{" "}
+                  {admin && `${admin.firstName} ${admin.lastName}`}
                 </h5>
               </div>
               <p>
-              In the CareConnect Dashboard, the Admin manages doctor profiles, oversees appointment approvals, and has access to patient and staff records. This role ensures an organized, secure, and efficient hospital workflow while upholding privacy standards              </p>
+                In the CareConnect Dashboard, the Admin manages doctor profiles,
+                oversees appointment approvals, and has access to patient and
+                staff records. This role ensures an organized, secure, and
+                efficient hospital workflow while upholding privacy standards.
+              </p>
             </div>
           </div>
           <div className="secondBox">
@@ -74,9 +95,10 @@ const Dashboard = () => {
           </div>
           <div className="thirdBox">
             <p>Registered Doctors</p>
-            <h3>10</h3>
+            <h3>{doctors.length}</h3>
           </div>
         </div>
+
         <div className="banner">
           <h5>Appointments</h5>
           <table>
@@ -91,46 +113,56 @@ const Dashboard = () => {
               </tr>
             </thead>
             <tbody>
-              {appointments && appointments.length > 0
-                ? appointments.map((appointment) => (
-                    <tr key={appointment._id}>
-                      <td>{`${appointment.firstName} ${appointment.lastName}`}</td>
-                      <td>{appointment.appointment_date.substring(0, 16)}</td>
-                      <td>{`${appointment.doctor.firstName} ${appointment.doctor.lastName}`}</td>
-                      <td>{appointment.department}</td>
-                      <td>
-                        <select
-                          className={
-                            appointment.status === "Pending"
-                              ? "value-pending"
-                              : appointment.status === "Accepted"
-                              ? "value-accepted"
-                              : "value-rejected"
-                          }
-                          value={appointment.status}
-                          onChange={(e) =>
-                            handleUpdateStatus(appointment._id, e.target.value)
-                          }
-                        >
-                          <option value="Pending" className="value-pending">
-                            Pending
-                          </option>
-                          <option value="Accepted" className="value-accepted">
-                            Accepted
-                          </option>
-                          <option value="Rejected" className="value-rejected">
-                            Rejected
-                          </option>
-                        </select>
-                      </td>
-                      <td>{appointment.hasVisited === true ? <GoCheckCircleFill className="green"/> : <AiFillCloseCircle className="red"/>}</td>
-                    </tr>
-                  ))
-                : "No Appointments Found!"}
+              {appointments && appointments.length > 0 ? (
+                appointments.map((appointment) => (
+                  <tr key={appointment._id}>
+                    <td>{`${appointment.firstName} ${appointment.lastName}`}</td>
+                    <td>{appointment.appointment_date.substring(0, 16)}</td>
+                    <td>{`${appointment.doctor.firstName} ${appointment.doctor.lastName}`}</td>
+                    <td>{appointment.department}</td>
+                    <td>
+                      <select
+                        className={
+                          appointment.status === "Pending"
+                            ? "value-pending"
+                            : appointment.status === "Accepted"
+                            ? "value-accepted"
+                            : "value-rejected"
+                        }
+                        value={appointment.status}
+                        onChange={(e) =>
+                          handleUpdateStatus(appointment._id, e.target.value)
+                        }
+                        // ✅ Disable dropdown if status is not Pending
+                        disabled={appointment.status !== "Pending"}
+                      >
+                        <option value="Pending" className="value-pending">
+                          Pending
+                        </option>
+                        <option value="Accepted" className="value-accepted">
+                          Accepted
+                        </option>
+                        <option value="Rejected" className="value-rejected">
+                          Rejected
+                        </option>
+                      </select>
+                    </td>
+                    <td>
+                      {appointment.hasVisited === true ? (
+                        <GoCheckCircleFill className="green" />
+                      ) : (
+                        <AiFillCloseCircle className="red" />
+                      )}
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="6">No Appointments Found!</td>
+                </tr>
+              )}
             </tbody>
           </table>
-
-          {}
         </div>
       </section>
     </>
