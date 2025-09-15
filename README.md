@@ -9,6 +9,7 @@ CareConnect is divided into three primary modules:
 1. **Backend**: Manages database operations, API routes, and all backend logic.
 2. **Frontend**: Interface for patient registration, login, and appointment booking.
 3. **Dashboard**: Admin and doctor interface for managing appointments. Admins have the authority to add or remove doctors.
+4. 🔗 Admin Dashboard URL: https://hms-dasboard.netlify.app/
 
 ## 🌟 Features
 
